@@ -1,0 +1,209 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>Profile - Shop</title>
+    <style>
+        body {
+            font-family: 'Segoe UI', Arial, sans-serif;
+            background: #f4f6fb;
+            margin: 0;
+            padding: 0;
+        }
+        .navbar {
+            background: #fff;
+            box-shadow: 0 2px 8px rgba(0,0,0,0.06);
+            padding: 0.5rem 0;
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+            position: sticky;
+            top: 0;
+            z-index: 10;
+        }
+        .logo {
+            display: flex;
+            align-items: center;
+            margin-left: 40px;
+        }
+        .logo-svg {
+            width: 48px;
+            height: 48px;
+            margin-right: 12px;
+        }
+        .logo-text {
+            font-size: 2rem;
+            font-weight: bold;
+            color: #4285f4;
+            letter-spacing: 1px;
+        }
+        .nav-links {
+            margin-right: 40px;
+            display: flex;
+            align-items: center;
+            gap: 20px;
+        }
+        .nav-link {
+            color: #333;
+            text-decoration: none;
+            font-size: 1.1rem;
+            transition: color 0.2s;
+            position: relative;
+        }
+        .nav-link:hover {
+            color: #4285f4;
+        }
+        .cart-icon, .wishlist-icon {
+            position: relative;
+            display: inline-flex;
+            align-items: center;
+        }
+        .badge {
+            position: absolute;
+            top: -6px;
+            right: -6px;
+            background: #ea4335;
+            color: #fff;
+            font-size: 0.9rem;
+            padding: 2px 7px;
+            border-radius: 50%;
+            font-weight: bold;
+        }
+        .profile-container {
+            max-width: 500px;
+            margin: 48px auto;
+            background: #fff;
+            border-radius: 10px;
+            box-shadow: 0 2px 12px rgba(0,0,0,0.10);
+            padding: 40px 32px 32px 32px;
+        }
+        h2 {
+            text-align: center;
+            font-size: 2rem;
+            margin-bottom: 32px;
+            color: #222;
+        }
+        form {
+            display: flex;
+            flex-direction: column;
+        }
+        label {
+            margin-bottom: 6px;
+            color: #333;
+            font-weight: 500;
+        }
+        input[type="text"], input[type="email"] {
+            padding: 10px;
+            border: 1px solid #ccc;
+            border-radius: 5px;
+            margin-bottom: 18px;
+            font-size: 1rem;
+        }
+        .button-group {
+            display: flex;
+            gap: 15px;
+            margin-top: 20px;
+        }
+        .save-btn, .back-btn {
+            flex: 1;
+            border: none;
+            padding: 12px 0;
+            border-radius: 5px;
+            font-size: 1.1rem;
+            font-weight: 600;
+            cursor: pointer;
+            transition: all 0.2s;
+            text-decoration: none;
+            text-align: center;
+            display: inline-block;
+        }
+        .save-btn {
+            background: linear-gradient(90deg, #4285f4 0%, #34a853 100%);
+            color: #fff;
+        }
+        .save-btn:hover {
+            background: linear-gradient(90deg, #357ae8 0%, #0f9d58 100%);
+            transform: translateY(-1px);
+        }
+        .back-btn {
+            background: #fff;
+            color: #666;
+            border: 2px solid #ccc;
+        }
+        .back-btn:hover {
+            background: #f8f9fa;
+            border-color: #999;
+            color: #333;
+        }
+        @media (max-width: 600px) {
+            .button-group {
+                flex-direction: column;
+            }
+            .nav-links {
+                gap: 10px;
+            }
+        }
+    </style>
+</head>
+<body>
+    <nav class="navbar">
+        <div class="logo">
+            <!-- Google-like Shop Logo SVG -->
+            <svg class="logo-svg" viewBox="0 0 48 48">
+                <circle cx="24" cy="24" r="24" fill="#fff"/>
+                <text x="50%" y="58%" text-anchor="middle" font-size="22" font-family="Arial, sans-serif" font-weight="bold" fill="#4285f4">S</text>
+                <text x="62%" y="58%" text-anchor="middle" font-size="22" font-family="Arial, sans-serif" font-weight="bold" fill="#ea4335">h</text>
+                <text x="74%" y="58%" text-anchor="middle" font-size="22" font-family="Arial, sans-serif" font-weight="bold" fill="#fbbc05">o</text>
+                <text x="86%" y="58%" text-anchor="middle" font-size="22" font-family="Arial, sans-serif" font-weight="bold" fill="#34a853">p</text>
+            </svg>
+            <span class="logo-text">Shop</span>
+        </div>
+        <div class="nav-links">
+            <a class="nav-link" href="{% url 'home' %}">Home</a>
+            <a class="nav-link cart-icon" href="{% url 'view_cart' %}" title="Go to Cart">
+                <!-- Modern Shopping Cart SVG Icon -->
+                <svg xmlns="http://www.w3.org/2000/svg" width="32" height="32" fill="none" viewBox="0 0 24 24">
+                  <path d="M7 20a2 2 0 1 0 0 4 2 2 0 0 0 0-4zm10 2a2 2 0 1 1-4 0 2 2 0 0 1 4 0zM6.2 17l.8-2h7.45c.75 0 1.41-.41 1.75-1.03l3.24-6.16A1 1 0 0 0 19.5 6H5.21l-.94-2H1v2h2l3.6 7.59-1.35 2.44A2 2 0 0 0 5 18a2 2 0 0 0 2 2h12v-2H7.42a.25.25 0 0 1-.22-.13z" fill="#222"/>
+                </svg>
+                {% if cart_count > 0 %}
+                  <span class="badge">{{ cart_count }}</span>
+                {% endif %}
+            </a>
+            <a class="nav-link wishlist-icon" href="{% url 'view_wishlist' %}" title="My Wishlist">
+                <!-- Heart Icon for Wishlist -->
+                <svg xmlns="http://www.w3.org/2000/svg" width="32" height="32" fill="none" viewBox="0 0 24 24">
+                    <path d="M12 21.35l-1.45-1.32C5.4 15.36 2 12.28 2 8.5 2 5.42 4.42 3 7.5 3c1.74 0 3.41.81 4.5 2.09C13.09 3.81 14.76 3 16.5 3 19.58 3 22 5.42 22 8.5c0 3.78-3.4 6.86-8.55 11.54L12 21.35z" fill="#e53e3e"/>
+                </svg>
+                {% if wishlist_count > 0 %}
+                  <span class="badge">{{ wishlist_count }}</span>
+                {% endif %}
+            </a>
+            <form method="post" action="{% url 'user_logout' %}" style="display: inline;">
+                {% csrf_token %}
+                <button type="submit" style="background: none; border: none; color: #333; font-weight: 600; padding: 10px 20px; border-radius: 25px; cursor: pointer; transition: all 0.3s ease;">Logout</button>
+            </form>
+        </div>
+    </nav>
+
+    <div class="profile-container">
+        <h2>Your Profile</h2>
+        <form method="post">
+            {% csrf_token %}
+            <label for="id_first_name">First Name</label>
+            {{ form.first_name }}
+            <label for="id_last_name">Last Name</label>
+            {{ form.last_name }}
+            <label for="id_email">Email</label>
+            {{ form.email }}
+            <label for="id_address">Address</label>
+            {{ extra_form.address }}
+            <label for="id_phone">Phone</label>
+            {{ extra_form.phone }}
+            <div class="button-group">
+                <button class="save-btn" type="submit">Save Changes</button>
+                <a href="{% url 'home' %}" class="back-btn">Go Back</a>
+            </div>
+        </form>
+    </div>
+</body>
+</html> 

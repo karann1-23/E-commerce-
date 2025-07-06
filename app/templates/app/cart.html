@@ -1,0 +1,130 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>Your Cart</title>
+    <style>
+        body {
+            font-family: 'Segoe UI', Arial, sans-serif;
+            background: #f4f6fb;
+            margin: 0;
+            padding: 0;
+        }
+        .cart-container {
+            max-width: 700px;
+            margin: 48px auto;
+            background: #fff;
+            border-radius: 10px;
+            box-shadow: 0 2px 12px rgba(0,0,0,0.10);
+            padding: 40px 32px 32px 32px;
+        }
+        h2 {
+            text-align: center;
+            font-size: 2rem;
+            margin-bottom: 32px;
+            color: #222;
+        }
+        .cart-list {
+            list-style: none;
+            padding: 0;
+            margin-bottom: 32px;
+        }
+        .cart-item {
+            display: flex;
+            align-items: center;
+            border-bottom: 1px solid #eee;
+            padding: 18px 0;
+        }
+        .cart-image {
+            width: 80px;
+            height: 80px;
+            object-fit: cover;
+            border-radius: 8px;
+            background: #eee;
+            margin-right: 24px;
+        }
+        .cart-details {
+            flex: 1;
+        }
+        .cart-name {
+            font-size: 1.1rem;
+            font-weight: bold;
+            margin-bottom: 6px;
+        }
+        .cart-qty {
+            color: #555;
+            margin-bottom: 4px;
+        }
+        .cart-price {
+            color: #1a8917;
+            font-weight: bold;
+        }
+        .cart-total {
+            text-align: right;
+            font-size: 1.2rem;
+            font-weight: bold;
+            margin-top: 24px;
+            color: #222;
+        }
+        .checkout-btn {
+            display: block;
+            width: 100%;
+            background: linear-gradient(90deg, #4285f4 0%, #34a853 100%);
+            color: #fff;
+            border: none;
+            padding: 14px 0;
+            border-radius: 5px;
+            font-size: 1.1rem;
+            font-weight: 600;
+            cursor: pointer;
+            margin-top: 30px;
+            transition: background 0.2s;
+        }
+        .checkout-btn:hover {
+            background: linear-gradient(90deg, #357ae8 0%, #0f9d58 100%);
+        }
+        .empty-cart {
+            text-align: center;
+            color: #888;
+            font-size: 1.1rem;
+            margin: 40px 0;
+        }
+    </style>
+</head>
+<body>
+    <div class="cart-container">
+        <h2>Your Cart</h2>
+        <a href="{% url 'home' %}" style="display:inline-block;background:#4285f4;color:#fff;text-decoration:none;padding:8px 16px;border-radius:5px;margin-bottom:24px;font-size:1rem;">← Continue Shopping</a>
+        <ul class="cart-list">
+            {% for item in cart_items %}
+                <li class="cart-item">
+                    {% if item.product.image %}
+                        <img class="cart-image" src="{{ item.product.image.url }}" alt="{{ item.product.name }}">
+                    {% endif %}
+                    <div class="cart-details">
+                        <div class="cart-name">{{ item.product.name }}</div>
+                        <div class="cart-qty">Quantity: {{ item.quantity }}</div>
+                        <div class="cart-price">Price: ${{ item.product.price }}</div>
+                    </div>
+                    <form method="post" action="{% url 'remove_from_cart' item.id %}" style="margin-left:16px;">
+                        {% csrf_token %}
+                        <button type="submit" style="background:#ea4335;color:#fff;border:none;padding:7px 14px;border-radius:5px;cursor:pointer;font-size:0.95rem;">Remove</button>
+                    </form>
+                </li>
+            {% empty %}
+                <div class="empty-cart">Your cart is empty.</div>
+            {% endfor %}
+        </ul>
+        <div class="cart-total">
+            <div>Subtotal: ${{ subtotal }}</div>
+            <div>Shipping: ${{ shipping }}</div>
+            <div><strong>Total: ${{ total }}</strong></div>
+        </div>
+        {% if cart_items %}
+            <form method="get" action="{% url 'checkout' %}">
+                <button class="checkout-btn" type="submit">Proceed to Payment</button>
+            </form>
+        {% endif %}
+    </div>
+</body>
+</html> 
